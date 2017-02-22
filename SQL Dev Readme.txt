@@ -7,7 +7,7 @@ Port: 1521
 SID: titan
 
 Order of Operations:
-FROM, WHERE, SELECT, ORDER BY
+FROM, WHERE, GROUP BY, HAVING, SELECT, ORDER BY
 Parenthasis, AND, OR
 
 SQL Developer Version: 3.0.04 newer than that and you could get issues with what it outputs
@@ -15,3 +15,10 @@ SQL Developer Version: 3.0.04 newer than that and you could get issues with what
 ||' '|| will allow strings to be on the same line but is different than the concat character
 
 GitHub Repo: https://github.com/KaydenMiller/CS2550_Database.git
+
+Aggrigate Functions
+  MIN
+  MAX
+  COUNT
+  SUM
+  AVG

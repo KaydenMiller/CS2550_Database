@@ -50,7 +50,71 @@ FROM dual;
 SELECT TO_CHAR(MONTHS_BETWEEN(SYSDATE, registration_date), '999.99')
 FROM student;
 
+-- AGGRIGATE FUNCTIONS
+SELECT MIN(ProdPrice), MAX(ProdPrice), SUM(ProdPrice), AVG(ProdPrice), MIN(ProdNextShipDate), MAX(ProdNextShipDate)
+FROM Product;
 
+SELECT MIN(QTY), MAX(QTY), SUM(QTY), ROUND(AVG(QTY), 2), TO_CHAR(AVG(QTY), '999.99')
+FROM ordline;
 
+SELECT TO_CHAR(MAX(ProdPrice), '999.99') AS "Max Product Price", ProdMFG
+FROM Product
+GROUP BY ProdMFG
+ORDER BY Max(ProdPrice) DESC;
 
+SELECT DISTINCT custCity
+FROM Customer
+ORDER BY custCity;
 
+-- HAVING AND GROUP BY
+-- ORDER OF OPERATIONS: FROM WHERE GROUP BY HAVING SELECT ORDER BY
+SELECT TO_CHAR(MAX(ProdPrice), '999.99') AS "Max Product Price", ProdMFG
+FROM Product
+GROUP BY ProdMFG
+HAVING MAX(ProdPrice) > 100
+ORDER BY Max(ProdPrice) DESC;
+
+-- COUNT does not count anything with a null value thus try to always use *
+-- COUNTs the number of rows
+SELECT COUNT(*), ProdMFG
+FROM Product
+HAVING MAX(ProdPrice) > 100
+GROUP BY ProdMFG
+ORDER BY COUNT(*);
+
+SELECT COUNT(*), ProdMFG, ProdName
+FROM Product
+GROUP BY ProdMFG, ProdName;
+
+SELECT MAX(custBal) - AVG(CustBal) AS Difference
+FROM Customer;
+
+SELECT MIN(OrdDate)
+FROM OrderTbl;
+
+SELECT COUNT(*), CustState
+FROM Customer
+GROUP BY CustState;
+
+-- NVL = Null Value if true fill "whatever was entered"
+SELECT COUNT(*), NVL(EmpCommRate, 0.00)
+FROM Employee
+GROUP BY EmpCommRate;
+
+SELECT SUM(ProdPrice), ProdMFG
+FROM Product
+GROUP BY ProdMFG;
+
+SELECT COUNT(*), OrdState
+FROM OrderTbl
+WHERE OrdState = 'WA'
+GROUP BY OrdState;
+
+SELECT COUNT(*), CustNo
+FROM OrderTbl
+GROUP BY CustNo
+HAVING Count(*) > 1;
+
+SELECT COUNT(*), NVL(EmpNo, 'OTHER EMP')
+FROM OrderTbl
+GROUP BY EmpNo;
