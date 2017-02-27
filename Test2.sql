@@ -79,5 +79,22 @@ SELECT custCity, custState, COUNT(*)
 FROM Customer
 GROUP BY custcity, custstate
 ORDER BY COUNT(*) DESC;
+--/////////////////////////////////////////////////////////////////////////////
+-- SUBQUERYS / Aggrigate Functions / JOINS
 
+-- IN keyword is used when it is possable to return multiple value
+SELECT EmpFirstName, EmpLastName, CustFirstName, CustLastName
+FROM Employee e JOIN OrderTbl o
+ON e.empno = o.empno
+JOIN Customer c
+ON o.custno = c.custno
+WHERE c.custbal IN (SELECT MIN(CustBal) FROM customer);
 
+SELECT custLastName
+FROM
+  (SELECT EmpFirstName, EmpLastName, CustFirstName, CustLastName, custbal
+  FROM Employee e JOIN OrderTbl o
+  ON e.empno = o.empno
+  JOIN Customer c
+  ON o.custno = c.custno)
+WHERE custBal = (SELECT MIN(CustBal) FROM Customer);
