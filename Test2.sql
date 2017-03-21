@@ -98,3 +98,56 @@ FROM
   JOIN Customer c
   ON o.custno = c.custno)
 WHERE custBal = (SELECT MIN(CustBal) FROM Customer);
+-- ////////////////////////////////////////////////////////////////////////////
+-- What student is taking the most sections
+-- 1.
+SELECT student_id, COUNT(*) AS Number_Sections
+FROM enrollment e JOIN section s
+ON e.section_id = s.section_id
+WHERE Course_no BETWEEN 100 AND 199
+GROUP BY student_id
+HAVING COUNT(*) = 
+  (
+    SELECT MAX(Number_Sections)
+    FROM
+      (
+        SELECT student_id, COUNT(*) AS Number_Sections
+        FROM enrollment e JOIN section s
+        ON e.section_id = s.section_id
+        WHERE Course_no BETWEEN 100 AND 199
+        GROUP BY student_id
+       )
+  );
+
+-- 2.
+SELECT First_Name, Last_Name, Numeric_Grade
+FROM student s JOIN enrollment e
+ON s.student_id = e.student_id
+JOIN grade g
+ON e.section_id = g.section_id 
+  AND e.student_id = g.student_id
+JOIN section sec
+ON sec.section_id = e.section_id
+WHERE sec.course_no = 230 
+  AND sec.section_id = 100
+  AND g.grade_type_code = 'FI'
+  AND numeric_grade = 
+  (
+    SELECT MAX(numeric_grade)
+    FROM
+    (
+      SELECT First_Name, Last_Name, Numeric_Grade
+      FROM student s JOIN enrollment e
+      ON s.student_id = e.student_id
+      JOIN grade g
+      ON e.section_id = g.section_id 
+        AND e.student_id = g.student_id
+      JOIN section sec
+      ON sec.section_id = e.section_id
+      WHERE sec.course_no = 230 
+        AND sec.section_id = 100
+        AND g.grade_type_code = 'FI'
+      )
+  );
+
+
