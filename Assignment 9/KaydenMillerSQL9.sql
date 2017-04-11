@@ -107,16 +107,12 @@ WHERE sec.section_id IN
 
 -- 8.
 -- Why does this return an extra student?
-SELECT zip.zip, zip.city, NVL(COUNT(s.student_id), 0) AS Students
+SELECT zip.zip, zip.city, COUNT(Distinct s.student_id) AS Students
 FROM zipcode zip JOIN student s
 	ON s.zip = zip.zip
-WHERE s.zip IN 
-(
-	SELECT zip
-	FROM zipcode 
-	WHERE state = 'CT'
-		AND city = 'Stamford'
-)
+LEFT OUTER JOIN enrollment e
+	ON s.student_id = e.student_id	
+WHERE zip.city ='Stamford'
 GROUP BY zip.zip, zip.city;
 	
 -- 9.
